@@ -12,7 +12,7 @@ int Kp = 100;
 int Kd = 0;
 int Ki = 0;
 
-long e,e_dot,int_e;
+long e,e_dot,int_e,pree;
 float pretime,dt;
 
 long duration1;

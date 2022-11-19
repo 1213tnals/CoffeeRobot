@@ -27,20 +27,20 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(strcmp(App_order,"half shot")==0)
+  if(strcmp(cmd=='A')
   
   {    
     Half_shot();
     App_order="sleep";
 
   }
-   else if(strcmp(App_order,"one shot")==0)
+   else if(strcmp(cmd=='B')
    {
     one_shot();
     App_order="sleep";
 
   }
-   else if(strcmp(App_order,"two shot")==0)
+   else if(cmd=='C')
    {
     two_shot();
     App_order="sleep";
