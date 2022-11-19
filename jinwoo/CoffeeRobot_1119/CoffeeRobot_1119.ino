@@ -24,7 +24,7 @@ int M2_pinNum_2 = 5;
 int M2_SpeedPin = 11;
 
 
-int cmd;
+char cmd;
 int ir_R;
 int ir_L;    // ir sensor read
 
@@ -38,7 +38,7 @@ float pretime,dt;
 
 
 long duration1;
-long length1;
+long length1 = 30000;
 long duration2;
 long length2;
 
@@ -68,59 +68,60 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available()) {      
+  if (Serial.available()) {
+     cmd = Serial.read();
+          
      if(cmd=='S'){
-      //Serial.println("Stop Motor");
+      Serial.println("Stop Motor");
       digitalWrite(LED_BUILTIN, HIGH);
-      delay(5000);
+      delay(100);
       flag++;
     }
 
     if(cmd=='O'){
       //Serial.println("User Finded");
       digitalWrite(LED_BUILTIN, HIGH);
-      delay(5000);
+      delay(100);
     }
       
     if(cmd=='A'){
       //Serial.println("You order Half shot");
       digitalWrite(LED_BUILTIN, HIGH);
-      delay(5000);
+      delay(100);
       Serial.println("5");
       delay(5000);     //assume: after 5sec, user has gone
       Serial.println("9");
       flag=0;
     }
       
-    if(cmd=="B"){
+    if(cmd=='B'){
       //Serial.println("You order One shot");
       digitalWrite(LED_BUILTIN, HIGH);
-      delay(5000);
+      delay(100);
       Serial.println("5");
       delay(5000);     //assume: after 5sec, user has gone
       Serial.println("9");
       flag=0;
     }
       
-    if(cmd=="C"){
+    if(cmd=='C'){
       //Serial.println("You order Two shot");
       digitalWrite(LED_BUILTIN, HIGH);
-      delay(5000);     //assume: after 5sec, making finish
+      delay(100);     //assume: after 5sec, making finish
       Serial.println("5");
       delay(5000);     //assume: after 5sec, user has gone
       Serial.println("9");
       flag=0;
-
-
     }
   }// hand sign -->motor stop
     //s-> stop 약자
     //o-> order
     //A,B,C->반샷 한샷 투샷
     //5-> 워터펌프 작동 완료 시그널/9-> 사람이 컵까지 가져갔을 때 시그널
+
     
-    
-  if(flag==0 & cmd!="S") {
+   
+  if(flag==0 && cmd!='S') {
 
     ir_R = digitalRead(IR_R);
     ir_L = digitalRead(IR_L);
@@ -138,9 +139,9 @@ void loop() {
       analogWrite(IN3, 0);
     }
 
-    Serial.print(ir_R);
-    Serial.print(' ');
-    Serial.println(ir_L);
+    //Serial.print(ir_R);
+    //Serial.print(' ');
+    //Serial.println(ir_L);
   }
   // line tracking driving code
 
@@ -158,31 +159,23 @@ void loop() {
       length1 = length1 + duration1;
   }// US sensor reading
 
-  length1 = length1 / 5;
-  length1 = length1 * 17/1000;
-  if(length1 < 5 && flag==0 && cmd!='S' ){
-    avoid_algorithmn();
-  }
 
-  Serial.println(length1); 
 
-  delay(100);
-  length1 = 0;// if sensor value <1000, start avoid algorithm
-    
-  if(cmd=="A")
+
+  if(cmd=='A')
   {    
     Half_shot();
-    cmd="Z";
+    cmd='Z';
   }
-   else if(cmd=="B")
+   else if(cmd=='B')
   {
     one_shot();
     cmd='Z';
   }
-  else if(cmd=="C")
+  else if(cmd=='C')
   {
     two_shot();
-    cmd="Z";
+    cmd='Z';
   }
   else
   {
@@ -194,9 +187,22 @@ void loop() {
     analogWrite(M2_SpeedPin, 0);
     delay(100);
   }
-}
-    
 
+
+
+  length1 = length1 / 5;
+  length1 = length1 * 17/1000;
+  if(length1 < 5 && flag==0 && cmd!='S' ){
+    avoid_algorithmn();
+  }
+
+  //Serial.println(length1); 
+
+  delay(100);
+  length1 = 30000;// if sensor value <1000, start avoid algorithm
+}
+
+    
 // avoid algorithm
 void avoid_algorithmn()
 {
@@ -248,6 +254,7 @@ void avoid_algorithmn()
 }// length2 can't convet to cm
 
 
+
 //linetracking + sonic sensor done
 
 
@@ -261,9 +268,7 @@ void Half_shot()
     digitalWrite(M2_pinNum_1, LOW);
     digitalWrite(M2_pinNum_2, HIGH);
     analogWrite(M2_SpeedPin, 200);
-    delay(100);//2번 모터의 작동 시간 조절부
-
-  
+    delay(100);//2번 모터의 작동 시간 조절부  
 }
 
 
@@ -277,8 +282,6 @@ void one_shot()
     digitalWrite(M2_pinNum_2, HIGH);
     analogWrite(M2_SpeedPin, 200);
     delay(100);//2번 모터의 작동 시간 조절부
-
-  
 }
 
 
@@ -292,6 +295,4 @@ void two_shot()
     digitalWrite(M2_pinNum_2, HIGH);
     analogWrite(M2_SpeedPin, 200);
     delay(100);//2번 모터의 작동 시간 조절부
-
-  
-}
+} 
