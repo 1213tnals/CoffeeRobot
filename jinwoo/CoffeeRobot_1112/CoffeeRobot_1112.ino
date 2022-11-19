@@ -61,6 +61,11 @@ void loop() {
       digitalWrite(LED_BUILTIN, LOW);
       delay(5000);
     }// hand sign -->motor stop
+    //s-> stop 약자
+    //o-> order
+    //A,B,C->반샷 한샷 투샷
+    //5-> 워터펌프 작동 완료 시그널/9-> 사람이 컵까지 가져갔을 때 시그널
+    
     
     else {
 
