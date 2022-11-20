@@ -1,27 +1,27 @@
-#define IN1 11
-#define IN2 12
-#define IN3 9
-#define IN4 10     //for line tracking
+#define IN1 2
+#define IN2 3
+#define IN3 4
+#define IN4 5     //for line tracking
 
-#define IR_R 2
-#define IR_L 4  //Ir sensor right & left
+#define IR_R 22
+#define IR_L 23 //Ir sensor right & left
    
 
-#define TRIG_F 3
-#define ECHO_F 4
-#define TRIG_R 5
-#define ECHO_R 6
-#define speed1 7
-#define speed2 8   //motor control values
+#define TRIG_F 24
+#define ECHO_F 26
+#define TRIG_R 25
+#define ECHO_R 27
+#define speed1 3
+#define speed2 4   //motor control values
 
 
-int M1_pinNum_1 = 2;
-int M1_pinNum_2 = 3;
-int M1_SpeedPin = 10;
+int M1_pinNum_1 = 28;
+int M1_pinNum_2 = 29;
+int M1_SpeedPin = 6;
 
-int M2_pinNum_1 = 4;
-int M2_pinNum_2 = 5;
-int M2_SpeedPin = 11;
+int M2_pinNum_1 = 30;
+int M2_pinNum_2 = 31;
+int M2_SpeedPin = 7;
 
 
 char cmd;
@@ -123,8 +123,8 @@ void loop() {
    
   if(flag==0 && cmd!='S') {
 
-    ir_R = digitalRead(IR_R);
-    ir_L = digitalRead(IR_L);
+    ir_R = 1;  ///테스터 digitalRead(IR_R);
+    ir_L = 1;  ///테스터 digitalRead(IR_L);
 
     if (ir_R == 1 && ir_L == 0) {         //rotate_R
       analogWrite(IN2, 0);
@@ -135,8 +135,10 @@ void loop() {
       analogWrite(IN3, 0);
     }
     else {                                //straight
-      analogWrite(IN4, 255);
-      analogWrite(IN3, 0);
+      digitalWrite(IN1, HIGH);
+      analogWrite(IN2, 150);
+      digitalWrite(IN3, HIGH);
+      analogWrite(IN4, 150);
     }
 
     //Serial.print(ir_R);
