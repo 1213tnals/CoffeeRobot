@@ -1,18 +1,16 @@
-#define IN1 2
-#define IN2 3
-#define IN3 4
-#define IN4 5     //for line tracking
+#define DIR1 2
+#define PWM1 3
+#define DIR2 4
+#define PWM2 5     //Driving motors
 
-#define IR_R 22
-#define IR_L 23 //Ir sensor right & left
+#define IR_R 32
+#define IR_L 33 //Ir sensor right & left
    
 
 #define TRIG_F 24
 #define ECHO_F 26
 #define TRIG_R 25
 #define ECHO_R 27
-#define speed1 3
-#define speed2 4   //motor control values
 
 
 int M1_pinNum_1 = 28;
@@ -38,7 +36,7 @@ float pretime,dt;
 
 
 long duration1;
-long length1 = 30000;
+long length1 = 0;
 long duration2;
 long length2;
 
@@ -53,10 +51,10 @@ void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
   
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT);
-  pinMode(IN4, OUTPUT);
+  pinMode(DIR1, OUTPUT);
+  pinMode(PWM1, OUTPUT);
+  pinMode(DIR2, OUTPUT);
+  pinMode(PWM2, OUTPUT);
 
   pinMode(IR_R, INPUT);
   pinMode(IR_L, INPUT);
@@ -123,28 +121,33 @@ void loop() {
    
   if(flag==0 && cmd!='S') {
 
-    ir_R = 1;  ///테스터 digitalRead(IR_R);
-    ir_L = 1;  ///테스터 digitalRead(IR_L);
+    ir_R = digitalRead(IR_R);  
+    ir_L = digitalRead(IR_L);  
+    //Serial.println(ir_R);
+    //Serial.println(ir_L);    
 
     if (ir_R == 1 && ir_L == 0) {         //rotate_R
-      analogWrite(IN2, 0);
-      analogWrite(IN3, 0);
+      digitalWrite(DIR1, HIGH);
+      analogWrite(PWM1, 30);
+      digitalWrite(DIR2,LOW);
+      analogWrite(PWM2, 30);
     }
     else if (ir_R == 0 && ir_L == 1) {    //rotate_L
-      analogWrite(IN2, 0);
-      analogWrite(IN3, 0);
+      digitalWrite(DIR1, LOW);
+      analogWrite(PWM1, 30);
+      digitalWrite(DIR2, HIGH);
+      analogWrite(PWM2, 30);
     }
     else {                                //straight
-      digitalWrite(IN1, HIGH);
-      analogWrite(IN2, 150);
-      digitalWrite(IN3, HIGH);
-      analogWrite(IN4, 150);
+      digitalWrite(DIR1, HIGH);
+      analogWrite(PWM1, 30);
+      digitalWrite(DIR2, HIGH);
+      analogWrite(PWM2, 30);
     }
 
     //Serial.print(ir_R);
     //Serial.print(' ');
-    //Serial.println(ir_L);
-  }
+    //Serial.println(ir_L);  }
   // line tracking driving code
 
   
@@ -157,8 +160,9 @@ void loop() {
       digitalWrite(TRIG_F, LOW);
     
       duration1 = pulseIn(ECHO_F, HIGH);
-
+      Serial.println(duration1);
       length1 = length1 + duration1;
+      
   }// US sensor reading
 
 
@@ -200,9 +204,8 @@ void loop() {
 
   //Serial.println(length1); 
 
-  delay(100);
-  length1 = 30000;// if sensor value <1000, start avoid algorithm
-}
+  delay(100);// if sensor value <1000, start avoid algorithm 
+} 
 
     
 // avoid algorithm
@@ -222,8 +225,13 @@ void avoid_algorithmn()
       length2 = length2 + duration1;
     }
     length2 = length2 / 5;
+    Serial.print(length2);
 
     //90도 왼쪽으로 도는 알고리즘 추가
+     digitalWrite(DIR1, HIGH);
+     analogWrite(PWM1, 30);
+     digitalWrite(DIR2,LOW);
+     analogWrite(PWM2, 30);
 
   }
 
@@ -250,8 +258,8 @@ void avoid_algorithmn()
     e_dot = (e-pree)/dt;
     pree = e;
 
-    digitalWrite(speed1,Kp*e+Kd*e_dot+Ki*int_e);
-    digitalWrite(speed2,200);
+    digitalWrite(PWM1,Kp*e+Kd*e_dot+Ki*int_e);
+    digitalWrite(PWM2,200);
   }
 }// length2 can't convet to cm
 
