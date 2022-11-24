@@ -5,8 +5,11 @@
 
 #define IR_R 2
 #define IR_L 4
+#define IR_F 3
 
 #define US_F 
+
+bool flag = 0;
 
 void setup() {
 
@@ -26,22 +29,37 @@ void loop() {
 
   int a = digitalRead(IR_R);
   int b = digitalRead(IR_L);
+  int c = digitalRead(IR_F);
 
-  if (a == 1 && b == 0){
-    analogWrite(IN2,0);
-    analogWrite(IN3,0);
+  if (a == 0 && b == 0 && c == 1){
+    analogWrite(IN2,255);
+    analogWrite(IN3,255);  //앞으로 가는 코드
   }
-  else if (a == 0 && b == 1){
+  else if (a == 0 && b == 1 && c == 0){
+    analogWrite(IN2,255);
+    analogWrite(IN3,0);   //왼쪽 적외선 센서 닿았을 때
+    flag = 0;
+  }
+  else if (a == 1 && b == 0 && c == 0){
     analogWrite(IN2,0);
-    analogWrite(IN3,0);
+    analogWrite(IN3,255);   //오른쪽 적외선 센서 닿았을 때
+    flag = 1;
   }
   else{
-    analogWrite(IN4,255);
-    analogWrite(IN3,0);
+    if (flag == 0){
+      analogWrite(IN2,255);
+      analogWrite(IN3,0); // 오른쪽으로 가는 코드
+    }
+    else if (flag == 1){
+      analogWrite(IN2,0);
+      analogWrite(IN3,255); // 왼쪽으로 가는 코드
+    }
   }
 
   Serial.print(a);
   Serial.print(' ');
   Serial.println(b);
+  Serial.print(' ');
+  Serial.println(c);
 
 }
