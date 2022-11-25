@@ -1,7 +1,7 @@
-#define TRIG1 9 //TRIG 핀 설정 (초음파 보내는 핀)
-#define ECHO1 8 //ECHO 핀 설정 (초음파 받는 핀)
-#define TRIG2 7 //TRIG 핀 설정 (초음파 보내는 핀)
-#define ECHO2 6 //ECHO 핀 설정 (초음파 받는 핀)
+#define TRIG1 25 //TRIG 핀 설정 (초음파 보내는 핀)
+#define ECHO1 27 //ECHO 핀 설정 (초음파 받는 핀)
+#define TRIG2 28 //TRIG 핀 설정 (초음파 보내는 핀)
+#define ECHO2 29 //ECHO 핀 설정 (초음파 받는 핀)
 
 void setup() {
   Serial.begin(9600); //시리얼모니터로 센서값을 확인하기위해서 시리얼 통신을 정의                    
@@ -47,10 +47,6 @@ void loop(){
   Serial.println(" Cm");
   delay(500); //측정값보여주는 시간 간격
 
-  if (distance1 <5) // 거리가 5cm 이하일때 작동 정지.
-  exit(0);
 
-  if (distance2 <5) // 거리가 5cm 이하일때 작동 정지.
-  exit(0);
   
 }
