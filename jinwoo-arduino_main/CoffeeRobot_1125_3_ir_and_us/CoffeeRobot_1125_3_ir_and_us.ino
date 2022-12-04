@@ -4,9 +4,9 @@
 #define DIR2 4
 #define PWM2 5  //Driving motors
 
-#define IR_R 33  //I3
-#define IR_F 32  //I2
-#define IR_L 31  //I1   Ir sensor right & left
+#define IR_R 39  //I3
+#define IR_F 38  //I2
+#define IR_L 40  //I1   Ir sensor right & left
 
 
 #define TRIG_F 24
@@ -196,10 +196,12 @@ void loop() {
     ir_R = digitalRead(IR_R);
     ir_F = digitalRead(IR_F);
     ir_L = digitalRead(IR_L);
-      //  Serial.print("ir_r:");
-      //  Serial.println(ir_R);
-      //  Serial.print("ir_L:");
-      //  Serial.println(ir_L);
+      Serial.print("ir_r:");
+      Serial.println(ir_R);
+      Serial.print("ir_L:");
+      Serial.println(ir_L);
+      Serial.print("ir_F:");
+      Serial.println(ir_F);
     if (ir_R == 1 && ir_F==0 && ir_L == 0) {         //rotate_R
       digitalWrite(DIR1, HIGH);
       analogWrite(PWM1, 85);

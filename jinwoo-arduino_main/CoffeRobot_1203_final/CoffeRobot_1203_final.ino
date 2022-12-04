@@ -5,9 +5,9 @@
 #define DIR2 4
 #define PWM2 5  //Driving motors
 
-#define IR_R 33  //I3
-#define IR_F 32  //I2
-#define IR_L 31  //I1   Ir sensor right & left
+#define IR_R 40  //I3
+#define IR_F 38  //I2
+#define IR_L 42  //I1   Ir sensor right & left
 
 #define TRIG_F 24
 #define ECHO_F 26
@@ -19,7 +19,7 @@
 #define MEGA_TX 50
 #define MEGA_RX 51
 
-SoftwareSerial A_Serial(MEGA_TX,MEGA_RX);
+//SoftwareSerial A_Serial(MEGA_TX,MEGA_RX);
 
 int order_data = 0;
 bool water_pump_flag = 0;
@@ -45,10 +45,6 @@ float pretime, dt = 0;
 
 int flag = 0; //user detecting flag
 
-void one_shot();
-void two_shot();
-void Half_shot();
-
 void stop();
 void left();
 float f_getDistanceCM();
@@ -59,7 +55,7 @@ float l_getDistanceCM();
 
 
 void setup() {
-  A_Serial.begin(9600);
+  //A_Serial.begin(9600);
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -78,18 +74,13 @@ void setup() {
   pinMode(ECHO_R, INPUT);
   pinMode(TRIG_L, OUTPUT);
   pinMode(ECHO_L, INPUT);
-
-  pinMode(ECHO_F, INPUT);
-  pinMode(ECHO_R, INPUT);
-  pinMode(ECHO_L, INPUT);
 }
 
 void loop() {
   //Serial.println("100");
   if (Serial.available()) {
     cmd = Serial.read();
-    //cmd = 'S';
-    
+    /*    
     if (cmd == 'S') {
       //Serial.println("Stop Motor");
       //digitalWrite(LED_BUILTIN, HIGH);
@@ -176,9 +167,9 @@ void loop() {
       //digitalWrite(LED_BUILTIN, HIGH);
       delay(100);  //assume: after 5sec, making finish
       order_data = 2;
-      A_Serial.println(order_data);
+      //A_Serial.println(order_data);
       Serial.println("5");
-      
+
       if(A_Serial.available())
       {
         while(water_pump_flag != 1)
@@ -202,6 +193,7 @@ void loop() {
       cmd = 'Z';
       flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
     }
+    */
   }  // hand sign -->motor stop
   //s-> stop 약자
   //o-> order
@@ -255,32 +247,28 @@ void loop() {
       //Serial.print("rightDistance:");
       //Serial.println(rightDistance);
       rightDistance = r_getDistanceCM();
-      if(ir_R == 1 || ir_F==1 || ir_L == 1){//ir 센서 검출되면 0으로 보냄
+        if(ir_R == 1 || ir_F==1 || ir_L == 1){//ir 센서 검출되면 0으로 보냄
         avoid_start_flag=0;
-
-      }
-      
-      }
-      
+        }  
+      } 
     }
   
-
     else if (leftDistance < rightDistance) {
       while(leftDistance<40){
       right();
       //Serial.print("leftDistance:");
       //Serial.println(leftDistance);
       leftDistance = l_getDistanceCM();
-      if(ir_R == 1 || ir_F==1 || ir_L == 1){//ir 센서 검출되면 0으로 보냄
+        if(ir_R == 1 || ir_F==1 || ir_L == 1){//ir 센서 검출되면 0으로 보냄
         avoid_start_flag=0;
-      }
+        }
       }
       //Serial.println("bbbbbbb");
     }
+    
     else{//좌측과 우측의 거리가 동일하게 나온부분
       //forward(speed_by_distance); <-원래는 직진시키려했는데, 앞을 계속 막고있으니 직진을 못하고 있었을 것
       //따라서 일단 좌우측 거리가 동일하게 나오면 왼쪽으로 피하게끔 설정해봄. 
-      
       left();
       //Serial.print("rightDistance:");
       //Serial.println(rightDistance);
@@ -292,24 +280,25 @@ void loop() {
 
 
 
-     if(ir_R == 1 || ir_F==1 || ir_L == 1){//ir 센서 검출되면 0으로 보냄
-        avoid_start_flag=0;
-
-      }
-      
-      
+    if(ir_R == 1 || ir_F==1 || ir_L == 1){//ir 센서 검출되면 0으로 보냄
+       avoid_start_flag=0;
+    }
+    Serial.print("AAAAA");   
+  }
   }
 
   else if(cm >= 40 && avoid_start_flag==0){  // 요부분에 ir 주행 추가
+    //Serial.print(cmd); 
     if (flag == 0 && cmd != 'S') {
-
-    ir_R = digitalRead(IR_R);
-    ir_F = digitalRead(IR_F);
-    ir_L = digitalRead(IR_L);
-      //  Serial.print("ir_r:");
-      //  Serial.println(ir_R);
-      //  Serial.print("ir_L:");
-      //  Serial.println(ir_L);
+      ir_R = digitalRead(IR_R);
+      ir_F = digitalRead(IR_F);
+      ir_L = digitalRead(IR_L);
+      Serial.print("ir_r:");
+      Serial.println(ir_R);
+      Serial.print("ir_L:");
+      Serial.println(ir_L);
+      Serial.print("ir_F:");
+      Serial.println(ir_F);
     if (ir_R == 1 && ir_F==0 && ir_L == 0) {         //rotate_R
       digitalWrite(DIR1, HIGH);
       analogWrite(PWM1, 85);
@@ -336,11 +325,9 @@ void loop() {
 
     //Serial.println("hhhhhhh");
     }
+    Serial.print("BBBBB");
   }
-
-
-
-}
+Serial.print("CCCCCC");
 }
 
 
