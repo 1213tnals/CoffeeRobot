@@ -1,13 +1,4 @@
 /////////////////////////////////////
-// about water pump pin
-#define M1_pinNum_1  2
-#define M1_pinNum_2  3
-#define M1_SpeedPin  4
-
-#define M2_pinNum_1  5
-#define M2_pinNum_2  6
-#define M2_SpeedPin  7
-
 /////////////////////////////////////////
 //about cup US sensor pin
 #define TRIG_cup 8
@@ -58,13 +49,7 @@ void setup() {
   pinMode(ECHO_cup, INPUT); 
   //////////////////////////////////////////
   // about water pump pin
-  pinMode(M1_pinNum_1, OUTPUT);
-  pinMode(M1_pinNum_2, OUTPUT);
-  pinMode(M1_SpeedPin, OUTPUT);
 
-  pinMode(M2_pinNum_1, OUTPUT);
-  pinMode(M2_pinNum_2, OUTPUT);
-  pinMode(M2_SpeedPin, OUTPUT); 
   //////////////////////////////////////////
   // about peltier
   sensors.begin();
@@ -123,6 +108,8 @@ void loop() {
     order_data = A_Serial.read();
   }//serial available close
 
+
+
   if(order_data == 0 ){
     cup_dispenser();
     if( cup_sensor_flag ==1){
@@ -165,56 +152,6 @@ void loop() {
 }//loop close
 
 
-
-//////////////////////////////////////////////////////////
-//water pump functions
-void half_shot()
-{
-    digitalWrite(M1_pinNum_1, LOW);
-    digitalWrite(M1_pinNum_2, HIGH);
-    analogWrite(M1_SpeedPin, 200);
-    delay(100);//1번 모터의 작동 시간 조절부
-    digitalWrite(M2_pinNum_1, LOW);
-    digitalWrite(M2_pinNum_2, HIGH);
-    analogWrite(M2_SpeedPin, 200);
-    delay(100);//2번 모터의 작동 시간 조절부
-
-    water_pump_flag = 1;
-    A_Serial.println(water_pump_flag);
-}
-
-
-void one_shot()
-{
-    digitalWrite(M1_pinNum_1, LOW);
-    digitalWrite(M1_pinNum_2, HIGH);
-    analogWrite(M1_SpeedPin, 200);
-    delay(100);//1번 모터의 작동 시간 조절부
-    digitalWrite(M2_pinNum_1, LOW);
-    digitalWrite(M2_pinNum_2, HIGH);
-    analogWrite(M2_SpeedPin, 200);
-    delay(100);//2번 모터의 작동 시간 조절부
-
-    water_pump_flag = 1;
-    A_Serial.println(water_pump_flag);
-}
-
-
-void two_shot()
-{
-    digitalWrite(M1_pinNum_1, LOW);
-    digitalWrite(M1_pinNum_2, HIGH);
-    analogWrite(M1_SpeedPin, 200);
-    delay(100);//1번 모터의 작동 시간 조절부
-    digitalWrite(M2_pinNum_1, LOW);
-    digitalWrite(M2_pinNum_2, HIGH);
-    analogWrite(M2_SpeedPin, 200);
-    delay(100);//2번 모터의 작동 시간 조절부
-
-    water_pump_flag = 1;
-    A_Serial.println(water_pump_flag); 
-}
-
 //////////////////////////////////////////////////////////
 //cup sensor reading
 float cup_CM() {
@@ -236,18 +173,3 @@ float cup_CM() {
   return cup_distance;
 }
 //////////////////////////////////////////////////////////
-void cup_dispenser(){
-  // set the speed at 60 rpm:
-  myStepper.setSpeed(200);
-  // initialize the serial port:
-  Serial.begin(9600);
-  Serial.println("clockwise");
-  myStepper.step(stepsPerRevolution);
-  delay(500);
-
-  // step one revolution in the other direction:
-  Serial.println("counterclockwise");
-  myStepper.step(-stepsPerRevolution);
-  delay(500);
-}
-

@@ -3,7 +3,7 @@ import serial
 import time
 from std_msgs.msg import Int32
 
-py_serial = serial.Serial(port='/dev/ttyACM1', baudrate=9600,)
+py_serial = serial.Serial(port='/dev/ttyUSB0', baudrate=9600,)
 
 def callback(data):
     rospy.loginfo('I received %d', data.data)
