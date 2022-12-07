@@ -66,7 +66,7 @@ float cup_dist = 15;
 int cup_sensor_flag = 0;
 
 const int stepsPerRevolution = 36;
-Stepper myStepper(stepsPerRevolution, 22, 23, 24, 25); //사용한 PIN번호 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!
+Stepper myStepper(stepsPerRevolution, 30, 31, 32, 33); //사용한 PIN번호 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 ///함수 원형
@@ -128,31 +128,37 @@ void loop() {
       //digitalWrite(LED_BUILTIN, HIGH);
       delay(100);
       stop();
-      hand_flag == 1;
-      Serial.println("100");
+      hand_flag = 1;
+      //Serial.println("100");
     }
+    Serial.println("12");
+    delay(500);
 
     while (hand_flag == 1) {
-      cmd = Serial.read();
-
+      Serial.println("34");
       start_time = millis();
       end_time = millis();
 
-      while (end_time - start_time <= 10000)
-      {
+      while ((end_time - start_time) <= 10000) {
         cmd = Serial.read();
         end_time = millis();
+        //Serial.println();
 
         if (cmd == 'O') {
           //Serial.println("User Finded");
           //digitalWrite(LED_BUILTIN, HIGH);
           delay(100);
-          Serial.println("99");
+          //Serial.println("99");
           hand_flag = 2;
           break;
         }
+        else{
+          hand_flag = 0;
+          Serial.println("78");
+        }
       }
     }
+    Serial.println("56");
 
     while (hand_flag == 2) {
       cmd = Serial.read();
@@ -328,9 +334,9 @@ void loop() {
 
         while (ir_R == 0 && ir_F == 0 && ir_L == 0) {
           left();
-          Serial.println("여기 맞아요");
+          //Serial.println("여기 맞아요");
         }
-        Serial.println("여기 아닌데아닌데? 아닌데?");
+        //Serial.println("여기 아닌데아닌데? 아닌데?");
         avoid_start_flag = 0;
 
 
@@ -387,12 +393,12 @@ void loop() {
       ir_R = digitalRead(IR_R);
       ir_F = digitalRead(IR_F);
       ir_L = digitalRead(IR_L);
-      Serial.print("ir_r:");
-      Serial.println(ir_R);
-      Serial.print("ir_L:");
-      Serial.println(ir_L);
-      Serial.print("ir_F:");
-      Serial.println(ir_F);
+      //Serial.print("ir_r:");
+      //Serial.println(ir_R);
+      //Serial.print("ir_L:");
+      //Serial.println(ir_L);
+      //Serial.print("ir_F:");
+      //Serial.println(ir_F);
       if (ir_R == 1 && ir_F == 0 && ir_L == 0) {       //rotate_R
         digitalWrite(DIR1, HIGH);
         analogWrite(PWM1, 85);
@@ -561,8 +567,8 @@ void left() {
   analogWrite(PWM2, standard_speed );  //숫자조절 필요
 
   //Serial.println("*left: ");
-  Serial.print("leftwheel: ");
-  Serial.println(standard_speed + (Kp * e + Kd * e_dot + Ki * int_e));
+  //Serial.print("leftwheel: ");
+  //Serial.println(standard_speed + (Kp * e + Kd * e_dot + Ki * int_e));
   //Serial.print("rightwheel: ");
   //Serial.println(standard_speed );
   //Serial.print("Kp: ");
@@ -597,8 +603,8 @@ void right() {
   //Serial.println("*right: ");
   //Serial.print("leftwheel: ");
   //Serial.println(standard_speed + (Kp * e + Kd * e_dot + Ki * int_e));
-  Serial.print("rightwheel: ");
-  Serial.println(standard_speed);
+  //Serial.print("rightwheel: ");
+  //Serial.println(standard_speed);
   //Serial.println(".");
 }
 
@@ -661,12 +667,12 @@ void cup_dispenser() {
   myStepper.setSpeed(200);
   // initialize the serial port:
   Serial.begin(9600);
-  Serial.println("clockwise");
+  //Serial.println("clockwise");
   myStepper.step(stepsPerRevolution);
   delay(500);
 
   // step one revolution in the other direction:
-  Serial.println("counterclockwise");
+  //Serial.println("counterclockwise");
   myStepper.step(-stepsPerRevolution);
   delay(500);
 }
