@@ -4,7 +4,6 @@ import time
 from std_msgs.msg import Int32
 
 py_serial = serial.Serial(port='/dev/ttyUSB0', baudrate=9600,)
-py_serial2 = serial.Serial(port='/dev/ttyUSB0', baudrate=9600,)
 
 def talker():
     pub = rospy.Publisher('jetson', Int32, queue_size=1)

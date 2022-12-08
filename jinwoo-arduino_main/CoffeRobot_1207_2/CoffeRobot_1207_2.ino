@@ -629,11 +629,11 @@ void half_shot()
   digitalWrite(M1_pinNum_1, LOW);
   digitalWrite(M1_pinNum_2, HIGH);
   analogWrite(M1_SpeedPin, 200);
-  delay(100);//1번 모터의 작동 시간 조절부
+  delay(1000);//1번 모터의 작동 시간 조절부
   digitalWrite(M2_pinNum_1, LOW);
   digitalWrite(M2_pinNum_2, HIGH);
   analogWrite(M2_SpeedPin, 200);
-  delay(100);//2번 모터의 작동 시간 조절부
+  delay(1000);//2번 모터의 작동 시간 조절부
 }
 
 
@@ -642,11 +642,11 @@ void one_shot()
   digitalWrite(M1_pinNum_1, LOW);
   digitalWrite(M1_pinNum_2, HIGH);
   analogWrite(M1_SpeedPin, 200);
-  delay(100);//1번 모터의 작동 시간 조절부
+  delay(1000);//1번 모터의 작동 시간 조절부
   digitalWrite(M2_pinNum_1, LOW);
   digitalWrite(M2_pinNum_2, HIGH);
   analogWrite(M2_SpeedPin, 200);
-  delay(100);//2번 모터의 작동 시간 조절부
+  delay(1000);//2번 모터의 작동 시간 조절부
 }
 
 
@@ -655,11 +655,11 @@ void two_shot()
   digitalWrite(M1_pinNum_1, LOW);
   digitalWrite(M1_pinNum_2, HIGH);
   analogWrite(M1_SpeedPin, 200);
-  delay(100);//1번 모터의 작동 시간 조절부
+  delay(1000);//1번 모터의 작동 시간 조절부
   digitalWrite(M2_pinNum_1, LOW);
   digitalWrite(M2_pinNum_2, HIGH);
   analogWrite(M2_SpeedPin, 200);
-  delay(100);//2번 모터의 작동 시간 조절부
+  delay(1000);//2번 모터의 작동 시간 조절부
 }
 
 void cup_dispenser() {
