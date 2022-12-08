@@ -152,7 +152,7 @@ void loop() {
           hand_flag = 2;
           break;
         }
-        else{
+        else {
           hand_flag = 0;
           Serial.println("78");
         }
@@ -188,6 +188,7 @@ void loop() {
 
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
+        delay(3000);
       }
 
       if (cmd == 'B') {
@@ -215,6 +216,7 @@ void loop() {
 
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
+        delay(3000);
       }
 
       if (cmd == 'C') {
@@ -242,6 +244,7 @@ void loop() {
 
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
+        delay(3000);
       }
     }
   }
@@ -307,6 +310,16 @@ void loop() {
 
 
         while (ir_R == 0 && ir_F == 0 && ir_L == 0) {
+          cm = f_getDistanceCM();
+          if (cm <= 40) {
+            digitalWrite(DIR1, HIGH);
+            analogWrite(PWM1, 17);
+            digitalWrite(DIR2, HIGH);
+            analogWrite(PWM2, 85);
+            delay(2200);
+            stop();
+            delay(1000);
+          }
           right();
         }
 
@@ -333,6 +346,16 @@ void loop() {
         ir_L = 0;
 
         while (ir_R == 0 && ir_F == 0 && ir_L == 0) {
+          cm = f_getDistanceCM();
+          if (cm <= 40) {
+            digitalWrite(DIR1, HIGH);
+            analogWrite(PWM1, 85);
+            digitalWrite(DIR2, HIGH);
+            analogWrite(PWM2, 17);
+            delay(2200);
+            stop();
+            delay(1000);
+          }
           left();
           //Serial.println("여기 맞아요");
         }
@@ -365,6 +388,16 @@ void loop() {
 
 
         while (ir_R == 0 && ir_F == 0 && ir_L == 0) {
+          cm = f_getDistanceCM();
+          if (cm <= 40) {
+            digitalWrite(DIR1, HIGH);
+            analogWrite(PWM1, 17);
+            digitalWrite(DIR2, HIGH);
+            analogWrite(PWM2, 85);
+            delay(2200);
+            stop();
+            delay(1000);
+          }
           right();
         }
 
@@ -629,11 +662,19 @@ void half_shot()
   digitalWrite(M1_pinNum_1, LOW);
   digitalWrite(M1_pinNum_2, HIGH);
   analogWrite(M1_SpeedPin, 200);
-  delay(1000);//1번 모터의 작동 시간 조절부
+  delay(100);//1번 모터의 작동 시간 조절부
   digitalWrite(M2_pinNum_1, LOW);
   digitalWrite(M2_pinNum_2, HIGH);
   analogWrite(M2_SpeedPin, 200);
-  delay(1000);//2번 모터의 작동 시간 조절부
+  delay(100);//2번 모터의 작동 시간 조절부
+  digitalWrite(M1_pinNum_1, LOW);
+  digitalWrite(M1_pinNum_2, LOW);
+  analogWrite(M1_SpeedPin, 0);
+  delay(100);//1번 모터의 작동 시간 조절부
+  digitalWrite(M2_pinNum_1, LOW);
+  digitalWrite(M2_pinNum_2, LOW);
+  analogWrite(M2_SpeedPin, 0);
+  delay(100);//2번 모터의 작동 시간 조절부
 }
 
 
@@ -642,11 +683,19 @@ void one_shot()
   digitalWrite(M1_pinNum_1, LOW);
   digitalWrite(M1_pinNum_2, HIGH);
   analogWrite(M1_SpeedPin, 200);
-  delay(1000);//1번 모터의 작동 시간 조절부
+  delay(100);//1번 모터의 작동 시간 조절부
   digitalWrite(M2_pinNum_1, LOW);
   digitalWrite(M2_pinNum_2, HIGH);
   analogWrite(M2_SpeedPin, 200);
-  delay(1000);//2번 모터의 작동 시간 조절부
+  delay(100);//2번 모터의 작동 시간 조절부
+  digitalWrite(M1_pinNum_1, LOW);
+  digitalWrite(M1_pinNum_2, LOW);
+  analogWrite(M1_SpeedPin, 0);
+  delay(100);//1번 모터의 작동 시간 조절부
+  digitalWrite(M2_pinNum_1, LOW);
+  digitalWrite(M2_pinNum_2, LOW);
+  analogWrite(M2_SpeedPin, 0);
+  delay(100);//2번 모터의 작동 시간 조절부
 }
 
 
@@ -655,11 +704,19 @@ void two_shot()
   digitalWrite(M1_pinNum_1, LOW);
   digitalWrite(M1_pinNum_2, HIGH);
   analogWrite(M1_SpeedPin, 200);
-  delay(1000);//1번 모터의 작동 시간 조절부
+  delay(100);//1번 모터의 작동 시간 조절부
   digitalWrite(M2_pinNum_1, LOW);
   digitalWrite(M2_pinNum_2, HIGH);
   analogWrite(M2_SpeedPin, 200);
-  delay(1000);//2번 모터의 작동 시간 조절부
+  delay(100);//2번 모터의 작동 시간 조절부
+  digitalWrite(M1_pinNum_1, LOW);
+  digitalWrite(M1_pinNum_2, LOW);
+  analogWrite(M1_SpeedPin, 0);
+  delay(100);//1번 모터의 작동 시간 조절부
+  digitalWrite(M2_pinNum_1, LOW);
+  digitalWrite(M2_pinNum_2, LOW);
+  analogWrite(M2_SpeedPin, 0);
+  delay(100);//2번 모터의 작동 시간 조절부
 }
 
 void cup_dispenser() {

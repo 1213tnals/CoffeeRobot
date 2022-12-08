@@ -4,7 +4,7 @@
 #define DIR2 4
 #define PWM2 5  //Driving motors
 
-#define IR_R 39  //I3
+#define IR_R 42  //I3
 #define IR_F 38  //I2
 #define IR_L 40  //I1   Ir sensor right & left
 
