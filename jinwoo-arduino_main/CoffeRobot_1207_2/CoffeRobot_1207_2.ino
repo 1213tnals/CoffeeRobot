@@ -1,4 +1,3 @@
-#include <SoftwareSerial.h>
 #include <Stepper.h>
 /////바퀴 모터 PWM
 #define DIR1 2
@@ -131,11 +130,11 @@ void loop() {
       hand_flag = 1;
       //Serial.println("100");
     }
-    Serial.println("12");
+    //Serial.println("12");
     delay(500);
 
     while (hand_flag == 1) {
-      Serial.println("34");
+      //Serial.println("34");
       start_time = millis();
       end_time = millis();
 
@@ -154,11 +153,11 @@ void loop() {
         }
         else {
           hand_flag = 0;
-          Serial.println("78");
+          //Serial.println("78");
         }
       }
     }
-    Serial.println("56");
+    //Serial.println("56");
 
     while (hand_flag == 2) {
       cmd = Serial.read();
@@ -175,20 +174,19 @@ void loop() {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 1;
-
         Serial.println("5");
         half_shot();
+        
 
-        Serial.println("9");
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
         while (cup_sensor_flag == 1 && cup_dist <= 8) {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 2;
-
+        Serial.println("9");
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
-        delay(3000);
+        delay(5000);
       }
 
       if (cmd == 'B') {
@@ -203,20 +201,18 @@ void loop() {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 1;
-
         Serial.println("5");
         one_shot();
-
-        Serial.println("9");
+        
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
         while (cup_sensor_flag == 1 && cup_dist <= 8) {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 2;
-
+        Serial.println("9");
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
-        delay(3000);
+        delay(5000);
       }
 
       if (cmd == 'C') {
@@ -231,20 +227,19 @@ void loop() {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 1;
-
         Serial.println("5");
         two_shot();
+        
 
-        Serial.println("9");
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
         while (cup_sensor_flag == 1 && cup_dist <= 8) {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 2;
-
+        Serial.println("9");
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
-        delay(3000);
+        delay(5000);
       }
     }
   }
@@ -268,7 +263,7 @@ void loop() {
   float rightDistance = 60;
 
 
-  if (cm < 40) {
+  if (cm < 25) {
     //Serial.println("zzzzzzz");
     //0.5초간 정지합니다.
     stop();
@@ -300,7 +295,7 @@ void loop() {
         digitalWrite(DIR1, HIGH);
         analogWrite(PWM1, 17);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 85);
+        analogWrite(PWM2, 90);
         delay(2200);
         stop();
         delay(1000);
@@ -311,11 +306,11 @@ void loop() {
 
         while (ir_R == 0 && ir_F == 0 && ir_L == 0) {
           cm = f_getDistanceCM();
-          if (cm <= 40) {
+          if (cm <= 25) {
             digitalWrite(DIR1, HIGH);
             analogWrite(PWM1, 17);
             digitalWrite(DIR2, HIGH);
-            analogWrite(PWM2, 85);
+            analogWrite(PWM2, 90);
             delay(2200);
             stop();
             delay(1000);
@@ -335,7 +330,7 @@ void loop() {
 
       else if (leftDistance < rightDistance) {
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 85);
+        analogWrite(PWM1, 90);
         digitalWrite(DIR2, HIGH);
         analogWrite(PWM2, 17);
         delay(2200);
@@ -347,9 +342,9 @@ void loop() {
 
         while (ir_R == 0 && ir_F == 0 && ir_L == 0) {
           cm = f_getDistanceCM();
-          if (cm <= 40) {
+          if (cm <= 25) {
             digitalWrite(DIR1, HIGH);
-            analogWrite(PWM1, 85);
+            analogWrite(PWM1, 90);
             digitalWrite(DIR2, HIGH);
             analogWrite(PWM2, 17);
             delay(2200);
@@ -378,7 +373,7 @@ void loop() {
         digitalWrite(DIR1, HIGH);
         analogWrite(PWM1, 17);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 85);
+        analogWrite(PWM2, 90);
         delay(2200);
         stop();
         delay(1000);
@@ -389,11 +384,11 @@ void loop() {
 
         while (ir_R == 0 && ir_F == 0 && ir_L == 0) {
           cm = f_getDistanceCM();
-          if (cm <= 40) {
+          if (cm <= 25) {
             digitalWrite(DIR1, HIGH);
             analogWrite(PWM1, 17);
             digitalWrite(DIR2, HIGH);
-            analogWrite(PWM2, 85);
+            analogWrite(PWM2, 90);
             delay(2200);
             stop();
             delay(1000);
@@ -434,7 +429,7 @@ void loop() {
       //Serial.println(ir_F);
       if (ir_R == 1 && ir_F == 0 && ir_L == 0) {       //rotate_R
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 85);
+        analogWrite(PWM1, 90);
         digitalWrite(DIR2, HIGH);
         analogWrite(PWM2, 17);
         //drivingflag = 1;
@@ -444,21 +439,21 @@ void loop() {
         digitalWrite(DIR1, HIGH);
         analogWrite(PWM1, 17);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 85);
+        analogWrite(PWM2, 90);
         //drivingflag = 0;
         //Serial.println(ir_L);
       }
       else if (ir_R == 0 && ir_F == 1 && ir_L == 0) {     //stright black=1 white=0
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 70);
+        analogWrite(PWM1, 80);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 70);
+        analogWrite(PWM2, 80);
         //Serial.println("eeeeeeee");
       }
       else
       {
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 85);
+        analogWrite(PWM1, 90);
         digitalWrite(DIR2, HIGH);
         analogWrite(PWM2, 17);
       }
@@ -721,9 +716,9 @@ void two_shot()
 
 void cup_dispenser() {
   // set the speed at 60 rpm:
-  myStepper.setSpeed(200);
+  myStepper.setSpeed(60);
   // initialize the serial port:
-  Serial.begin(9600);
+  //Serial.begin(9600);
   //Serial.println("clockwise");
   myStepper.step(stepsPerRevolution);
   delay(500);
