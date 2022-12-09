@@ -2,8 +2,8 @@
 #define ECHO_L 27 //ECHO 핀 설정 (초음파 받는 핀)
 #define TRIG_R 28 //TRIG 핀 설정 (초음파 보내는 핀)
 #define ECHO_R 29 //ECHO 핀 설정 (초음파 받는 핀)
-#define TRIG_F 24
-#define ECHO_F 26
+#define TRIG_F 52
+#define ECHO_F 53
 
 void setup() {
   Serial.begin(9600); //시리얼모니터로 센서값을 확인하기위해서 시리얼 통신을 정의                    

@@ -56,7 +56,7 @@ float Kp = 1.2;
 float Kd = 0;
 float Ki = 0;
 
-float standard_speed = 60;
+float standard_speed = 70;
 float e, e_dot, int_e, pree = 0;
 float pretime, dt = 0;
 
@@ -115,6 +115,13 @@ void setup() {
   pinMode(M2_pinNum_1, OUTPUT);
   pinMode(M2_pinNum_2, OUTPUT);
   pinMode(M2_SpeedPin, OUTPUT);
+
+  pinMode(30, OUTPUT);
+  pinMode(31, OUTPUT);
+  pinMode(32, OUTPUT);
+  pinMode(33, OUTPUT);
+  
+  myStepper.setSpeed(60); // set the speed at 60 rpm:
 }
 
 void loop() {
@@ -167,26 +174,35 @@ void loop() {
         //digitalWrite(LED_BUILTIN, HIGH);
         delay(100);
 
+        //Serial.println("11");
         cup_dispenser();
+        //Serial.println("22");
+        delay(2000);
         cup_dist = cup_CM();
+        //Serial.println(cup_dist);
 
-        while (cup_dist > 8) {
+        while (cup_dist > 12) {
           cup_dist = cup_CM();
+          //Serial.println("33");
         }
+        //Serial.println("44");
         cup_sensor_flag = 1;
         Serial.println("5");
         half_shot();
         
 
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
-        while (cup_sensor_flag == 1 && cup_dist <= 8) {
+        while (cup_sensor_flag == 1 && cup_dist <= 12) {
           cup_dist = cup_CM();
+          delay(1000);
+          //Serial.println("55");
         }
-        cup_sensor_flag = 2;
+        //Serial.println("66");
+        cup_sensor_flag = 0;
         Serial.println("9");
         cmd = 'Z';
-        hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
         delay(5000);
+        hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
       }
 
       if (cmd == 'B') {
@@ -197,7 +213,7 @@ void loop() {
         cup_dispenser();
         cup_dist = cup_CM();
 
-        while (cup_dist > 8) {
+        while (cup_dist > 20) {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 1;
@@ -205,10 +221,10 @@ void loop() {
         one_shot();
         
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
-        while (cup_sensor_flag == 1 && cup_dist <= 8) {
+        while (cup_sensor_flag == 1 && cup_dist <= 20) {
           cup_dist = cup_CM();
         }
-        cup_sensor_flag = 2;
+        cup_sensor_flag = 0;
         Serial.println("9");
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
@@ -223,7 +239,7 @@ void loop() {
         cup_dispenser();
         cup_dist = cup_CM();
 
-        while (cup_dist > 8) {
+        while (cup_dist > 20) {
           cup_dist = cup_CM();
         }
         cup_sensor_flag = 1;
@@ -232,10 +248,10 @@ void loop() {
         
 
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
-        while (cup_sensor_flag == 1 && cup_dist <= 8) {
+        while (cup_sensor_flag == 1 && cup_dist <= 20) {
           cup_dist = cup_CM();
         }
-        cup_sensor_flag = 2;
+        cup_sensor_flag = 0;
         Serial.println("9");
         cmd = 'Z';
         hand_flag = 0;  //워터펌프 제어코드 추가, 컵 인식플래그 만들고 인식플래그 변화완료되면 다시 주행시작하도록 해야 함.
@@ -263,7 +279,7 @@ void loop() {
   float rightDistance = 60;
 
 
-  if (cm < 25) {
+  if (cm < 30) {
     //Serial.println("zzzzzzz");
     //0.5초간 정지합니다.
     stop();
@@ -293,10 +309,10 @@ void loop() {
     if (avoid_start_flag == 1) {
       if (leftDistance > rightDistance) {
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 17);
+        analogWrite(PWM1, 25);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 90);
-        delay(2200);
+        analogWrite(PWM2, 85);
+        delay(1100);
         stop();
         delay(1000);
         ir_R = 0;
@@ -308,10 +324,10 @@ void loop() {
           cm = f_getDistanceCM();
           if (cm <= 25) {
             digitalWrite(DIR1, HIGH);
-            analogWrite(PWM1, 17);
+            analogWrite(PWM1, 25);
             digitalWrite(DIR2, HIGH);
-            analogWrite(PWM2, 90);
-            delay(2200);
+            analogWrite(PWM2, 85);
+            delay(1100);
             stop();
             delay(1000);
           }
@@ -330,10 +346,10 @@ void loop() {
 
       else if (leftDistance < rightDistance) {
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 90);
+        analogWrite(PWM1, 85);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 17);
-        delay(2200);
+        analogWrite(PWM2, 25);
+        delay(1100);
         stop();
         delay(1000);
         ir_R = 0;
@@ -344,10 +360,10 @@ void loop() {
           cm = f_getDistanceCM();
           if (cm <= 25) {
             digitalWrite(DIR1, HIGH);
-            analogWrite(PWM1, 90);
+            analogWrite(PWM1, 85);
             digitalWrite(DIR2, HIGH);
-            analogWrite(PWM2, 17);
-            delay(2200);
+            analogWrite(PWM2, 25);
+            delay(1100);
             stop();
             delay(1000);
           }
@@ -371,10 +387,10 @@ void loop() {
         //forward(speed_by_distance); <-원래는 직진시키려했는데, 앞을 계속 막고있으니 직진을 못하고 있었을 것
         //따라서 일단 좌우측 거리가 동일하게 나오면 왼쪽으로 피하게끔 설정해봄.
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 17);
+        analogWrite(PWM1, 25);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 90);
-        delay(2200);
+        analogWrite(PWM2, 85);
+        delay(1100);
         stop();
         delay(1000);
         ir_R = 0;
@@ -386,10 +402,10 @@ void loop() {
           cm = f_getDistanceCM();
           if (cm <= 25) {
             digitalWrite(DIR1, HIGH);
-            analogWrite(PWM1, 17);
+            analogWrite(PWM1, 25);
             digitalWrite(DIR2, HIGH);
-            analogWrite(PWM2, 90);
-            delay(2200);
+            analogWrite(PWM2, 85);
+            delay(1100);
             stop();
             delay(1000);
           }
@@ -429,17 +445,17 @@ void loop() {
       //Serial.println(ir_F);
       if (ir_R == 1 && ir_F == 0 && ir_L == 0) {       //rotate_R
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 90);
+        analogWrite(PWM1, 85);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 17);
+        analogWrite(PWM2, 25);
         //drivingflag = 1;
         //Serial.println(ir_R);
       }
       else if (ir_R == 0 && ir_F == 0 && ir_L == 1) {  //rotate_L
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 17);
+        analogWrite(PWM1, 25);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 90);
+        analogWrite(PWM2, 85);
         //drivingflag = 0;
         //Serial.println(ir_L);
       }
@@ -453,9 +469,9 @@ void loop() {
       else
       {
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 90);
+        analogWrite(PWM1, 85);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 17);
+        analogWrite(PWM2, 25);
       }
       //Serial.println("hhhhhhh");
     }
@@ -715,10 +731,6 @@ void two_shot()
 }
 
 void cup_dispenser() {
-  // set the speed at 60 rpm:
-  myStepper.setSpeed(60);
-  // initialize the serial port:
-  //Serial.begin(9600);
   //Serial.println("clockwise");
   myStepper.step(stepsPerRevolution);
   delay(500);
