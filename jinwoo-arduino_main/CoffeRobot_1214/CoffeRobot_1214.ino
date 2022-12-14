@@ -1,9 +1,14 @@
-#include <Stepper.h>
-/////바퀴 모터 PWM
+////바퀴 모터 PWM
 #define DIR1 2
 #define PWM1 3
 #define DIR2 4
 #define PWM2 5  //Driving motors
+
+/////컵 모터
+#define IN8 8
+#define IN9 9
+#define IN10 10
+#define IN11 11
 
 //////초음파 장애물 회피
 #define TRIG_F 24
@@ -64,9 +69,6 @@ float pretime, dt = 0;
 float cup_dist = 15;
 int cup_sensor_flag = 0;
 
-const int stepsPerRevolution = 36;
-Stepper myStepper(stepsPerRevolution, 30, 31, 32, 33); //사용한 PIN번호 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
 ///함수 원형
 void stop();
@@ -97,6 +99,11 @@ void setup() {
   pinMode(DIR2, OUTPUT);
   pinMode(PWM2, OUTPUT);
 
+  pinMode(IN8, OUTPUT);
+  pinMode(IN9, OUTPUT);
+  pinMode(IN10, OUTPUT);
+  pinMode(IN11, OUTPUT);
+
   pinMode(IR_R, INPUT);
   pinMode(IR_F, INPUT);
   pinMode(IR_L, INPUT);
@@ -115,13 +122,6 @@ void setup() {
   pinMode(M2_pinNum_1, OUTPUT);
   pinMode(M2_pinNum_2, OUTPUT);
   pinMode(M2_SpeedPin, OUTPUT);
-
-  pinMode(30, OUTPUT);
-  pinMode(31, OUTPUT);
-  pinMode(32, OUTPUT);
-  pinMode(33, OUTPUT);
-  
-  myStepper.setSpeed(60); // set the speed at 60 rpm:
 }
 
 void loop() {
@@ -189,7 +189,7 @@ void loop() {
         cup_sensor_flag = 1;
         Serial.println("5");
         half_shot();
-        
+
 
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
         while (cup_sensor_flag == 1 && cup_dist <= 12) {
@@ -225,7 +225,7 @@ void loop() {
         cup_sensor_flag = 1;
         Serial.println("5");
         one_shot();
-        
+
 
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
         while (cup_sensor_flag == 1 && cup_dist <= 12) {
@@ -261,7 +261,7 @@ void loop() {
         cup_sensor_flag = 1;
         Serial.println("5");
         two_shot();
-        
+
 
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
         while (cup_sensor_flag == 1 && cup_dist <= 12) {
@@ -749,14 +749,66 @@ void two_shot()
 }
 
 void cup_dispenser() {
-  //Serial.println("clockwise");
-  myStepper.step(stepsPerRevolution);
-  delay(500);
+  for (int i = 0; i < 50; i++) {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+    delay(5);
 
-  // step one revolution in the other direction:
-  //Serial.println("counterclockwise");
-  myStepper.step(-stepsPerRevolution);
-  delay(500);
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    delay(5);
+
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    delay(5);
+
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+    delay(5);
+  }
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  delay(700);
+  
+  for (int i = 0; i < 50; i++) {
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+    delay(5);
+
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    delay(5);
+
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    delay(5);
+
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+    delay(5);
+  }
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
 }
 
 float cup_CM() {
