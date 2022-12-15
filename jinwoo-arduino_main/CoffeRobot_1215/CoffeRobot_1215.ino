@@ -194,8 +194,8 @@ void loop() {
         //cup이 떨어지고 난 뒤 cup이 멀어지면 flag=2로
         while (cup_sensor_flag == 1 && cup_dist <= 12) {
           cup_dist = cup_CM();
+          Serial.println(cup_dist);
           delay(1000);
-          //Serial.println("55");
         }
         //Serial.println("66");
         cup_sensor_flag = 0;
@@ -468,19 +468,19 @@ void loop() {
       //Serial.println(ir_L);
       //Serial.print("ir_F:");
       //Serial.println(ir_F);
-      if (ir_R == 1 && ir_F == 0 && ir_L == 0) {       //rotate_R
+      if (ir_R == 1 || (ir_F == 0 && ir_L == 0)) {       //rotate_R
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 80);
+        analogWrite(PWM1, 70);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 25);
+        analogWrite(PWM2, 30);
         //drivingflag = 1;
         //Serial.println(ir_R);
       }
-      else if (ir_R == 0 && ir_F == 0 && ir_L == 1) {  //rotate_L
+      else if ((ir_R == 0 && ir_F == 0) || ir_L == 1) {  //rotate_L
         digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 25);
+        analogWrite(PWM1, 30);
         digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 80);
+        analogWrite(PWM2, 70);
         //drivingflag = 0;
         //Serial.println(ir_L);
       }
@@ -491,13 +491,13 @@ void loop() {
         analogWrite(PWM2, 70);
         //Serial.println("eeeeeeee");
       }
-      else
-      {
-        digitalWrite(DIR1, HIGH);
-        analogWrite(PWM1, 75);
-        digitalWrite(DIR2, HIGH);
-        analogWrite(PWM2, 20);
-      }
+//      else
+//      {
+//        digitalWrite(DIR1, HIGH);
+//        analogWrite(PWM1, 75);
+//        digitalWrite(DIR2, HIGH);
+//        analogWrite(PWM2, 20);
+//      }
       //Serial.println("hhhhhhh");
     }
     //Serial.print("BBBBB");

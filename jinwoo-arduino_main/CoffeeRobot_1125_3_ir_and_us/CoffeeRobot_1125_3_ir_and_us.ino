@@ -194,7 +194,9 @@ void loop() {
     if (flag == 0 && cmd != 'S') {
 
     ir_R = digitalRead(IR_R);
+    delay(2);
     ir_F = digitalRead(IR_F);
+    delay(2);
     ir_L = digitalRead(IR_L);
       Serial.print("ir_r:");
       Serial.println(ir_R);
