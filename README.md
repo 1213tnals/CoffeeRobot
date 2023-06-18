@@ -85,7 +85,7 @@ _______________________________________________
 &nbsp;&nbsp;   
 ![readme_data/person_recog.gif](readme_data/person_recog.gif)   
 ![readme_data/person_recognize.png](readme_data/person_recognize.png)   
-![readme_data/person_recog_test.gif](readme_data/person_recog_test.gif)   
+<!-- ![readme_data/person_recog_test.gif](readme_data/person_recog_test.gif)   -->
 로봇은 라인을 따라 이동하고 장애물을 회피하며 주행을 하다가 사람을 인식하면(사람의 정지명령을 인식하면) 주행을 정지하고 사람의 주문을 입력받아야 합니다.   
 이때 사람이 주문을 하려다 마는 경우, 혹은 지나가는 행인의 손동작으로 인해 오인식할 수 있음을 생각하여 정지 이후 ***10초간 주문명령이 들어오지 않을 경우 다시 주행*** 하도록 하였습니다.   
 사람이 주문에 대한 버튼을 입력하게 되면 로봇은 완전히 주문 대기 모드로 전환합니다.   
