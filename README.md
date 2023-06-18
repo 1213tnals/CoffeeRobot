@@ -1,7 +1,7 @@
 # CoffeeRobot :coffee:
 자동화시스템 프로젝트 팀플 리포지토리
 
-**김성욱, 안진우, 양유경, 조수민** 가 함께 진행한 자동커피로봇 프로젝트입니다.   
+**[김성욱](https://github.com/AsdoubleU), [안진우](https://github.com/want2bedoctor), [양유경](https://github.com/callme60), [조수민](https://github.com/1213tnals)** 이 함께 진행한 자동커피로봇 프로젝트입니다.   
    
 이 프로젝트를 통해, ***정해진 라인을 따라 이동을 기본으로 하며 주변의 장애물을 회피 및 사용자를 판단하여 사용자의 주문을 받고 그 주문에 맞는 커피를 제작하는 로봇*** 을 만들고자 하였습니다.   
 &nbsp;&nbsp;&nbsp;
